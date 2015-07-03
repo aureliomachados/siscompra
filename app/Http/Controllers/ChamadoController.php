@@ -1,13 +1,15 @@
 <?php namespace App\Http\Controllers;
 
+use App\Chamado;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Produto;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Requests\ChamadoRequest;
 use Laracasts\Flash\Flash;
 
-class ProdutoController extends Controller {
+class ChamadoController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -16,9 +18,7 @@ class ProdutoController extends Controller {
 	 */
 	public function index()
 	{
-		$produtos = Produto::all();
-
-        return \View::make('cadastro.produtos.index')->with('produtos', $produtos);
+		return view('cadastro.chamados.index')->with('chamados', Chamado::all());
 	}
 
 	/**
@@ -28,7 +28,7 @@ class ProdutoController extends Controller {
 	 */
 	public function create()
 	{
-		return \View::make('cadastro.produtos.create');
+		return view('cadastro.chamados.create');
 	}
 
 	/**
@@ -36,14 +36,23 @@ class ProdutoController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Requests\ProdutoRequest $request)
+	public function store(ChamadoRequest $request)
 	{
-        Produto::create($request->all());
+        $chamado = new Chamado();
 
-        Flash::overlay("Produto adicionado!", 'Mensagem');
+        $chamado->descricao = $request->input('descricao');
+        $chamado->status = $request->input('status');
 
-        return \Redirect::route('cadastro.produtos.index');
-    }
+        //Passa a data do formato local para o formato entendido pelo banco de dados.
+        $chamado->dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('dataAbertura'));
+        $chamado->dataFechamento = Carbon::createFromFormat('d/m/Y', $request->input('dataFechamento'));
+
+        $chamado->save();
+
+        Flash::message("Novo chamado adicionado!");
+
+        return redirect()->route('cadastro.chamados.index');
+	}
 
 	/**
 	 * Display the specified resource.
@@ -53,9 +62,7 @@ class ProdutoController extends Controller {
 	 */
 	public function show($id)
 	{
-		$produto = Produto::find($id);
-
-        return \View::make('cadastro.produtos.show')->with('produto', $produto);
+		//
 	}
 
 	/**
@@ -66,7 +73,7 @@ class ProdutoController extends Controller {
 	 */
 	public function edit($id)
 	{
-
+		//
 	}
 
 	/**
@@ -88,7 +95,7 @@ class ProdutoController extends Controller {
 	 */
 	public function destroy($id)
 	{
-
+		//
 	}
 
 }

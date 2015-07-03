@@ -10,7 +10,7 @@
 
     <hr>
 
-    {!! Form::open(['url' => 'produtos']) !!}
+    {!! Form::open(['route' => 'cadastro.produtos.store']) !!}
 
     <div class="form-group">
         {!! Form::label('nome', 'Nome:') !!}

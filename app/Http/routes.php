@@ -20,4 +20,6 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::resource('produtos', 'ProdutoController');
+Route::resource('cadastro/produtos', 'ProdutoController');
+
+Route::resource('cadastro/chamados', 'ChamadoController');
