@@ -24,7 +24,7 @@ class ChamadoRequest extends Request {
 		return [
             'descricao' => 'required|min:4|max:2048',
             'dataAbertura' => 'required|date_format:d/m/Y',
-            'dataFechamento' => 'required|date_format:d/m/Y',
+            'dataFechamento' => 'required|date_format:d/m/Y'
 		];
 	}
 

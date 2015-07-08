@@ -27,12 +27,12 @@
     </div>
     <div class="form-group">
         {!! Form::label('dataAbertura', 'Data de abertura:') !!}
-        {!! Form::text('dataAbertura', null, ['class' => 'form-control']) !!}
+        {!! Form::text('dataAbertura', null, ['class' => 'form-control datepicker']) !!}
         @if($errors->has('dataAbertura')) <div class="has-error"><span class="help-block">{{$errors->first('dataAbertura')}}</span></div> @endif
     </div>
     <div class="form-group">
         {!! Form::label('dataFechamento', 'Data de fechamento:') !!}
-        {!! Form::text('dataFechamento', null, ['class' => 'form-control']) !!}
+        {!! Form::text('dataFechamento', null, ['class' => 'form-control datepicker']) !!}
         @if($errors->has('dataFechamento')) <div class="has-error"><span class="help-block">{{$errors->first('dataFechamento')}}</span></div> @endif
     </div>
     <div class="form-group">

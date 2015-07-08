@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Produto;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
+use App\Http\Requests\ProdutoRequest;
 
 class ProdutoController extends Controller {
 
@@ -16,7 +17,7 @@ class ProdutoController extends Controller {
 	 */
 	public function index()
 	{
-		$produtos = Produto::all();
+		$produtos = Produto::paginate(2);
 
         return \View::make('cadastro.produtos.index')->with('produtos', $produtos);
 	}
@@ -36,7 +37,7 @@ class ProdutoController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Requests\ProdutoRequest $request)
+	public function store(ProdutoRequest $request)
 	{
         Produto::create($request->all());
 
@@ -66,7 +67,9 @@ class ProdutoController extends Controller {
 	 */
 	public function edit($id)
 	{
+        $produto = Produto::find($id);
 
+        return view('cadastro.produtos.edit')->with('produto', $produto);
 	}
 
 	/**
@@ -75,9 +78,16 @@ class ProdutoController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(ProdutoRequest $request, $id)
 	{
-		//
+        $produto = Produto::find($id);
+
+        $produto->update($request->all(), $id);
+
+
+        Flash::warning('Produto atualizado.');
+
+        return redirect()->route('cadastro.produtos.index');
 	}
 
 	/**
@@ -88,7 +98,11 @@ class ProdutoController extends Controller {
 	 */
 	public function destroy($id)
 	{
+        Produto::destroy($id);
 
+        Flash::error('Produto removido!');
+
+        return redirect()->route('cadastro.produtos.index');
 	}
 
 }

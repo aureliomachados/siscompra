@@ -44,8 +44,8 @@ class ChamadoController extends Controller {
         $chamado->status = $request->input('status');
 
         //Passa a data do formato local para o formato entendido pelo banco de dados.
-        $chamado->dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('dataAbertura'));
-        $chamado->dataFechamento = Carbon::createFromFormat('d/m/Y', $request->input('dataFechamento'));
+        $chamado->dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('dataAbertura'))->format('Y-m-d H:i:s');
+        $chamado->dataFechamento = Carbon::createFromFormat('d/m/Y', $request->input('dataFechamento'))->format('Y-m-d H:i:s');
 
         $chamado->save();
 
@@ -62,7 +62,9 @@ class ChamadoController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$chamado = Chamado::find($id);
+
+        return view('cadastro.chamados.show')->with('chamado', $chamado);
 	}
 
 	/**
@@ -73,7 +75,12 @@ class ChamadoController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$chamado = Chamado::find($id);
+
+        $chamado->dataAbertura = Carbon::createFromFormat('Y-m-d H:i:s', $chamado->dataAbertura)->format('d/m/Y');
+        $chamado->dataFechamento = Carbon::createFromFormat('Y-m-d H:i:s', $chamado->dataFechamento)->format('d/m/Y');
+
+        return view('cadastro.chamados.edit')->with('chamado', $chamado);
 	}
 
 	/**
@@ -82,9 +89,22 @@ class ChamadoController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(ChamadoRequest $request, $id)
 	{
-		//
+		$chamado = Chamado::find($id);
+
+        $chamado->dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('dataAbertura'))->format('Y-m-d H:i:s');
+        $chamado->dataFechamento = Carbon::createFromFormat('d/m/Y', $request->input('dataFechamento'))->format('Y-m-d H:i:s');
+
+        $chamado->status = $request->input('status');
+
+        $chamado->descricao = $request->input('descricao');
+
+        $chamado->save();
+
+        Flash::warning('Chamado atualizado!');
+
+        return redirect()->route('cadastro.chamados.index');
 	}
 
 	/**
@@ -94,8 +114,11 @@ class ChamadoController extends Controller {
 	 * @return Response
 	 */
 	public function destroy($id)
-	{
-		//
+        {
+		Chamado::destroy($id);
+
+        return redirect()->route('cadastro.chamados.index');
 	}
+
 
 }

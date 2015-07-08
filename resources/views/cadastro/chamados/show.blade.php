@@ -1,25 +1,30 @@
 @extends('app')
 
 @section('title')
-    Produto {{$produto->nome}}
+    Chamado
 @stop
 
 @section('content')
     <table class="table table-bordered">
         <tr>
             <th>ID</th>
-            <td>{{$produto->id}}</td>
+            <td>{{$chamado->id}}</td>
         </tr>
         <tr>
-            <th>Nome</th>
-            <td>{{$produto->nome}}</td>
-        </tr>
-        <tr>
-            <th>Categoria</th>
-            <td>{{$produto->categoria}}</td>
-        </tr><tr>
             <th>Descrição</th>
-            <td>{{$produto->descricao}}</td>
+            <td>{{$chamado->descricao}}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{$chamado->status ? 'Ativo' : 'Inativo'}}</td>
+        </tr>
+        <tr>
+            <th>Data de abertura</th>
+            <td>{{date('d/m/Y', strtotime($chamado->dataAbertura))}}</td>
+        </tr>
+        <tr>
+            <th>Data de fechamento</th>
+            <td>{{date('d/m/Y', strtotime($chamado->dataFechamento))}}</td>
         </tr>
 
     </table>

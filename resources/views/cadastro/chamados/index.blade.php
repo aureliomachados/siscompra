@@ -12,19 +12,21 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th>Descrição</th>
+                    <th>Ver</th>
                     <th>Status</th>
                     <th>Data de abertura</th>
                     <th>Data de fechamento</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($chamados as $chamado)
                     <tr>
-                        <td>{{$chamado->descricao}}</td>
+                        <td>{!!Html::linkRoute('cadastro.chamados.show', 'ver', $chamado->id)!!}</td>
                         <td>{{$chamado->status ? 'Ativo' : 'Inativo'}}</td>
                         <td>{{date('d/m/Y', strtotime($chamado->dataAbertura))}}</td>
                         <td>{{date('d/m/Y', strtotime($chamado->dataFechamento))}}</td>
+                        <td>{!!Html::linkRoute('cadastro.chamados.edit', 'editar', $chamado->id, ['class' => 'btn btn-warning'])!!}</td>
                     </tr>
                 @endforeach
             </tbody>
